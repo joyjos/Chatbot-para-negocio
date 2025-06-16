@@ -1,0 +1,12 @@
+# node modules
+node_modules/
+
+# entorno
+.env
+
+# salida de build (si compilas)
+dist/
+build/
+
+# editor (VSCode, JetBrains, etc.)
+.vscode/

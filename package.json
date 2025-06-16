@@ -1,0 +1,31 @@
+{
+  "name": "01-traducciones-openai",
+  "version": "1.0.0",
+  "description": "Proyecto de traducciones usando JavaScript y el API de OpenAI",
+  "homepage": "https://github.com/joyjos/Chat-de-Traducciones#readme",
+  "bugs": {
+    "url": "https://github.com/joyjos/Chat-de-Traducciones/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joyjos/Chat-de-Traducciones.git"
+  },
+  "license": "MIT",
+  "author": "Jose G. Palacio",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "serve": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "openai": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
