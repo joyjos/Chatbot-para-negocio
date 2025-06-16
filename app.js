@@ -26,7 +26,7 @@ console.log("API KEY:", process.env.OPENAI_API_KEY);
 // Ruta/endpoint/url
 app.post("/api/chatbot", async(req, res) => {
 
-    const contexto = `
+    const context = `
         Eres un asistente de soporte para el Supermercado "El Córner".
         Información del negocio:
             Ubicación: Calle Asturias, 23, Gijón
@@ -38,12 +38,34 @@ app.post("/api/chatbot", async(req, res) => {
     `;
 
     // Recibir pregunta del usuario
+    const { message } = req.body
 
+    if(!message) return res.status(404).json({error: "Has mandado un mensaje vacío!!"});
 
     // Petición al modelo de IA
+    try {
+        const response = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {role: "system", content: context},
+                {role: "system", content: "Debes responder de la forma más corta y directa posible, usando los mínimos tokens posibles"},
+                {role: "user", content: message}
+            ],
+            max_tokens: 200,
+            response_format: {type: "text"}
+        });
 
+        // Devolver respuesta
+        const reply = response.choices[0].message.content;
 
-    // Devolver respuesta
+        return res.status(200).json({reply});
+
+    } catch (error) {
+        console.log("Error:", error);
+        return res.status(500).json({error: "Error al generar la respuesta"});
+    }
+
+    
 
     //return res.json({message: "Hola, qué tal"})
 });
