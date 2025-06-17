@@ -31,7 +31,7 @@ app.post("/api/chatbot", async(req, res) => {
         Información del negocio:
             Ubicación: Calle Asturias, 23, Gijón
             Horario: Lunes a Sábado de 8:00 a 15:00. Domingos de 10:00 a 13:00
-            Productos: Pan, leche, huevos, pescado, verduras, frutas y bebidas
+            Productos: Pan, leche, huevos, pescado, verduras, frutas y bebidas (solo y exclusivamente tenemos estos productos)
             Marcas: Pascual, Kaiku, Central Lechera Asturiana, Fanta, Coca-Cola, Pepsi
             Métodos de pago: Efectivo, Tarjeta y Bizum
         Solo puedes responder preguntas sobre el Supermercado. Cualquier otra pregunta está prohibida.
