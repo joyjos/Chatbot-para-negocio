@@ -1,16 +1,16 @@
 const sendButton = document.querySelector("#sendButton");
 
-sendButton.addEventListener("click", async() =>  {
+const inputText = document.querySelector("#inputText");
+const messagesContainer = document.querySelector(".chat__messages");
+
+const sendMessage = async() =>  {
 
     // Obtener el valor del input
-    const inputText = document.querySelector("#inputText");
     const myMessage = inputText.value.trim();
 
     if(!myMessage) return false;
 
     // Meter el mensaje del usuario en la caja de mensajes
-    const messagesContainer = document.querySelector(".chat__messages");
-
     messagesContainer.innerHTML += `<div class="chat__message chat__message--user">Yo: ${myMessage}</div>`;
 
     // Vaciar el input del usuario
@@ -35,4 +35,12 @@ sendButton.addEventListener("click", async() =>  {
 
     // Mover el scroll hacia abajo
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
-})
+};
+
+sendButton.addEventListener("click", sendMessage);
+inputText.addEventListener("keypress", (event) => {
+    if(event.key === "Enter"){
+        event.preventDefault();
+        sendMessage();
+    }
+});
