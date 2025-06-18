@@ -24,18 +24,8 @@ const openai = new OpenAI({
 console.log("API KEY:", process.env.OPENAI_API_KEY);
 
 // Ruta/endpoint/url
-const context = `
-        Eres un asistente de soporte para el Supermercado "El Córner".
-        Información del negocio:
-            Ubicación: Calle Asturias, 23, Gijón
-            Horario: Lunes a Sábado de 8:00 a 15:00. Domingos de 10:00 a 13:00
-            Productos: Pan, leche, huevos, pescado, verduras, frutas y bebidas (solo y exclusivamente tenemos estos productos)
-            Marcas: Pascual, Kaiku, Central Lechera Asturiana, Fanta, Coca-Cola, Pepsi
-            Métodos de pago: Efectivo, Tarjeta y Bizum
-        Solo puedes responder preguntas sobre el Supermercado. Cualquier otra pregunta está prohibida.
-    `;
 
-let conversations = {};
+let userThreads = {};
 
 app.post("/api/chatbot", async(req, res) => {
 
@@ -44,39 +34,59 @@ app.post("/api/chatbot", async(req, res) => {
 
     if(!message) return res.status(404).json({error: "Has mandado un mensaje vacío!!"});
 
-    if(!conversations[userId]){
-        conversations[userId] = [];
-    }
-
-    conversations[userId].push({role: "user", content: message});
-
     // Petición al modelo de IA
     try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {role: "system", content: context},
-                {role: "system", content: "Debes responder de la forma más corta y directa posible, usando los mínimos tokens posibles"},
-                ...conversations[userId]
-            ],
-            max_tokens: 200,
-            response_format: {type: "text"}
-        });
 
-        // Devolver respuesta
-        const reply = response.choices[0].message.content;
-
-        // Añadir al asistente la respuesta
-        conversations[userId].push({role: "assistant", content: reply});
-
-        // Limitar número de mensajes
-        if(conversations[userId].length > 12){
-            conversations[userId] = conversations[userId].slice(-10);
+        if(!userThreads[userId]){
+            const thread = await openai.beta.threads.createAndRun();
+            userThreads[userId] = thread.id;
         }
 
-        console.log(conversations);
+        const threadId = userThreads[userId];
 
-        return res.status(200).json({reply});
+        // Añadir mensaje al hilo de mi asistente
+        await openai.beta.threads.messages.createAndRun(threadId, {
+            role: "user", content: message
+        });
+
+        // Ejecutar petición al asistente
+        const myAssistant = await openai.beta.threads.runs.create(threadId, {
+            assistant_id: "asst_rZSoq6klJ2rFoHiFoP2O2Hlo"
+        });
+
+        console.log("Ejecución creada:", myAssistant.id,
+                    "Status inicial:", myAssistant.status);
+
+        // Esperar que la petición al asistente se complete
+        let runStatus = myAssistant;
+        let attemps = 0;
+        const maxAttemps = 30;
+
+        while(runStatus.status !== completed && attemps > maxAttemps){
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            runStatus = await openai.beta.threads.runs.retrieve(threadId, myAssistant.id);
+
+            attemps ++;
+
+            console.log(`Intento: ${attemps} - Status: ${runStatus.status}`);
+        }
+
+        if(runStatus.status !== "completed"){
+            throw new Error(`La ejecución del asistente no se ha completado. Estado final: ${runStatus.status}`)
+        }
+
+        // Sacar los mensajes
+        const messages = await openai.beta.threads.messages.list(threadId);
+
+        console.log("Total de mensajes en el hilo:", messages.data.length);
+        
+        // Filtrar los mensajes del hilo de conversación con la IA
+        const assistantMessages = messages.data.filter(msg => msg.role === "assistant")
+
+        console.log("Mensajes del asistente encontrados:", assistantMessages.length);
+
+        // Sacar la respuesta más reciente
 
     } catch (error) {
         console.log("Error:", error);
