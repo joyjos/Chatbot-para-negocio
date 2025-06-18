@@ -1,7 +1,7 @@
-## Chat de Traducciones
-Chat de Traducciones con integración de **Inteligencia Artificial**.
+## Chatbot de Supermercado "El Córner"
+Chatbot con integración de **Inteligencia Artificial**.
 
-Chat de Traducciones que permite a los usuarios traducir texto entre diferentes idiomas de forma dinámica y conversacional. Integra la **API de OpenAI** para ofrecer traducciones precisas, naturales y contextuales a través de un chat intuitivo.
+Chatbot inteligente diseñado para mejorar la atención al cliente en supermercados. Integra la **API de OpenAI** para comprender y responder de forma natural a las consultas de los usuarios.
 
 ## Table of Content
 -  [*01 Installation*](#section_01)
@@ -55,4 +55,4 @@ Chat de Traducciones que permite a los usuarios traducir texto entre diferentes 
 
 | HTTP Method | Endpoint           | Comentario                       |
 |-------------|--------------------|----------------------------------|
-| POST        | /api/traducir      | Translate text                   |
+| POST        | /api/chatbot       | Chatbot para negocio                   |
