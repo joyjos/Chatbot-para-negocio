@@ -87,13 +87,18 @@ app.post("/api/chatbot", async(req, res) => {
         console.log("Mensajes del asistente encontrados:", assistantMessages.length);
 
         // Sacar la respuesta más reciente
+        const reply = assistantMessages
+                        .sort((a, b) => b.created_at - b.created_at[0])
+                        .content[0].text.value;
+
+        console.log("Respuesta del asistente:", reply);
+
+        return res.status(200).json({reply});
 
     } catch (error) {
         console.log("Error:", error);
         return res.status(500).json({error: "Error al generar la respuesta"});
     }
-
-    
 
     //return res.json({message: "Hola, qué tal"})
 });
