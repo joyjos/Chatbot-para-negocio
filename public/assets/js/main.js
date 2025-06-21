@@ -16,7 +16,15 @@ const sendMessage = async() =>  {
     messagesContainer.innerHTML += `<div class="chat__message chat__message--user">Yo: ${myMessage}</div>`;
 
     // Vaciar el input del usuario
-    inputText.value = " ";
+    inputText.value = "";
+
+    setTimeout(() => {
+        // Añadir mensaje "escribiendo"
+        messagesContainer.innerHTML += `<div class="chat__message chat__message--bot chat__message--typing">Carmen: Escribiendo...</div>`;
+
+        // Mover el scroll hacia abajo
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }, 500)
 
     // Petición al BackEnd para que me responda la IA
     try {
@@ -28,9 +36,14 @@ const sendMessage = async() =>  {
                 userId,
                 message: myMessage})
         }) 
+
         // Incrustar mensaje del bot en el chat
         const data = await response.json();
 
+        // Borrar el mensaje de escribiendo
+        document.querySelector(".chat__message--typing").remove();
+
+        // Mostrar el mensaje de la IA
         messagesContainer.innerHTML += `<div class="chat__message chat__message--bot">Carmen: ${data.reply}</div>`;
         
     } catch (error) {
