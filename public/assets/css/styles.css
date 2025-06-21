@@ -4,7 +4,7 @@ root {
 
 body{
     font-family: Helvetica, sans-serif, Arial;
-    background-color: #15202b;
+    background-color: #2f3d4d;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,6 +61,7 @@ body{
     font-size: 1rem;
     border-radius: 1rem;
     word-wrap: break-word;
+    white-space: pre-line;
 }
 
 .chat__message--user {
@@ -109,7 +110,7 @@ body{
 
 .chat__button {
     flex: 1;
-    background-color: #1da1f2;
+    background-color: #d5aa44;
     color: #fff;
     cursor: pointer;
     border: none;
@@ -118,7 +119,7 @@ body{
 }
 
 .chat__button:hover {
-    background-color: #009dff;
+    background-color: #d3a12d;
     color: #fff;
     cursor: pointer;
     border: none;
