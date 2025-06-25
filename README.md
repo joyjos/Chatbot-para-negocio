@@ -1,7 +1,7 @@
 ## Chatbot de Supermercado "El Córner"
-Chatbot con integración de **Inteligencia Artificial**.
 
-Chatbot inteligente diseñado para mejorar la atención al cliente en supermercados. Integra la **API de OpenAI** para comprender y responder de forma natural a las consultas de los usuarios.
+Chatbot inteligente con integración de **Inteligencia Artificial**, diseñado para mejorar la atención al cliente en supermercados.
+Utiliza la **API de OpenAI** y está basado en un **asistente personalizado**, al que se le han definido instrucciones específicas para responder de forma natural, coherente y adaptada al contexto del negocio.
 
 ## Table of Content
 -  [*01 Installation*](#section_01)
